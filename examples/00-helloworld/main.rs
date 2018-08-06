@@ -2,14 +2,13 @@
 // License: http://opensource.org/licenses/ISC
 
 extern crate bgfx;
-
-mod common;
+extern crate examples_lib;
 
 use bgfx::*;
-use common::EventQueue;
+use examples_lib::EventQueue;
 use std::cmp::max;
 
-const LOGO: &'static [u8] = include_bytes!("assets/00-helloworld/logo.bin");
+const LOGO: &'static [u8] = include_bytes!("logo.bin");
 
 fn example(events: EventQueue) {
     let mut width: u16 = 1280;
@@ -53,5 +52,5 @@ fn example(events: EventQueue) {
 }
 
 fn main() {
-    common::run_example(1280, 720, example);
+    examples_lib::run_example(1280, 720, example);
 }

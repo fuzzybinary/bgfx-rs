@@ -7,16 +7,16 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 
-extern crate libc;
+pub mod ffi;
 
-pub type size_t   = ::libc::size_t;
+pub use ffi::*;
+
+pub type size_t   = usize;
 pub type int32_t  = i32;
 pub type uint8_t  = u8;
 pub type uint16_t = u16;
 pub type uint32_t = u32;
 pub type uint64_t = u64;
-
-include!("ffi_bgfx.rs");
 
 pub const BGFX_PCI_ID_NONE:                 u16 = 0x0000;
 pub const BGFX_PCI_ID_SOFTWARE_RASTERIZER:  u16 = 0x0001;

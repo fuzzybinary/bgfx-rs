@@ -62,7 +62,6 @@
 extern crate bgfx_sys;
 #[macro_use]
 extern crate bitflags;
-extern crate libc;
 
 use std::ffi;
 use std::marker::PhantomData;

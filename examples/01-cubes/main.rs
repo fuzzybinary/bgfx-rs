@@ -4,13 +4,12 @@
 extern crate bgfx;
 extern crate cgmath;
 extern crate time;
-
-mod common;
+extern crate examples_lib;
 
 use bgfx::*;
 use cgmath::{Angle, Decomposed, Deg, Matrix4, Point3, Quaternion, Rad, Rotation3, Transform,
              Vector3};
-use common::EventQueue;
+use examples_lib::EventQueue;
 use time::PreciseTime;
 
 
@@ -122,7 +121,7 @@ impl<'a> Cubes<'a> {
         self.ibh = Some(IndexBuffer::new(Memory::reference(self.bgfx, &CUBE_INDICES), BUFFER_NONE));
 
         // Create program from shaders.
-        self.program = Some(common::load_program(&self.bgfx, "vs_cubes", "fs_cubes"));
+        self.program = Some(examples_lib::load_program(&self.bgfx, "vs_cubes", "fs_cubes"));
 
         self.time = Some(PreciseTime::now());
     }
@@ -215,5 +214,5 @@ fn example(events: EventQueue) {
 }
 
 fn main() {
-    common::run_example(1280, 720, example);
+    examples_lib::run_example(1280, 720, example);
 }
