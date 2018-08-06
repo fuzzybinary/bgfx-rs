@@ -2,12 +2,12 @@
 // License: http://opensource.org/licenses/ISC
 
 extern crate bgfx;
-extern crate glutin;
+extern crate winit;
 extern crate libc;
 
 use bgfx::{Bgfx, PlatformData, RenderFrame};
 
-use glutin::{Api, GlRequest, Window, WindowBuilder};
+use common::winit::os::macos::WindowExt;
 
 use std;
 use std::env;
@@ -63,21 +63,24 @@ impl EventQueue {
 }
 
 /// Process window events on the render thread.
-fn process_events(window: &Window, event_tx: &Sender<Event>) -> bool {
+fn process_events(events_loop: &mut winit::EventsLoop, event_tx: &Sender<Event>) -> bool {
     let mut should_close = false;
 
-    for event in window.poll_events() {
+    events_loop.poll_events(|event| {
         match event {
-            glutin::Event::Closed => {
-                should_close = true;
-                event_tx.send(Event::Close).unwrap();
-            }
-            glutin::Event::Resized(w, h) => {
-                event_tx.send(Event::Size(w as u16, h as u16)).unwrap();
-            }
-            _ => {}
+            winit::Event::WindowEvent{ event, .. } => match event {
+                winit::WindowEvent::CloseRequested => {
+                    should_close = true;
+                    event_tx.send(Event::Close).unwrap();
+                },
+                winit::WindowEvent::Resized(logical_size) => {
+                    event_tx.send(Event::Size(logical_size.width as u16, logical_size.height as u16)).unwrap();
+                },
+                _ => ()
+            },
+            _ => ()
         }
-    }
+    });
 
     should_close
 }
@@ -120,11 +123,17 @@ fn init_bgfx_platform(window: &Window) {
         .unwrap();
 }
 
+#[cfg(target_os = "macos")]
+fn get_platform_window(window: &winit::Window) -> *mut std::os::raw::c_void {
+    return window.get_nswindow();
+}
+
 /// Set the platform data to be used by BGFX.
 #[cfg(not(target_os = "linux"))]
-fn init_bgfx_platform(window: &Window) {
+fn init_bgfx_platform(window: &winit::Window) {
+    
     PlatformData::new()
-        .window(unsafe {window.platform_window() as *mut std::os::raw::c_void })
+        .window(get_platform_window(window))
         .apply()
         .unwrap();
 }
@@ -132,16 +141,12 @@ fn init_bgfx_platform(window: &Window) {
 pub fn run_example<M>(width: u16, height: u16, main: M)
     where M: Send + 'static + FnOnce(EventQueue)
 {
-    let window = WindowBuilder::new()
-                     .with_dimensions(width as u32, height as u32)
-                     .with_gl(GlRequest::Specific(Api::OpenGl, (3, 1)))
+    let mut events_loop = winit::EventsLoop::new();
+    let window = winit::WindowBuilder::new()
+                     .with_dimensions(winit::dpi::LogicalSize::new(width as f64, height as f64))
                      .with_title(String::from("BGFX"))
-                     .build()
-                     .expect("Failed to create window");
-
-    unsafe {
-        window.make_current().unwrap();
-    }
+                     .build(&events_loop)
+                     .unwrap();
 
     // Create the channel used for communication between the main and render threads.
     let (event_tx, event_rx) = channel::<Event>();
@@ -158,7 +163,7 @@ pub fn run_example<M>(width: u16, height: u16, main: M)
     });
 
     // Pump window events until the window is closed.
-    while !process_events(&window, &event_tx) {
+    while !process_events(&mut events_loop, &event_tx) {
         bgfx::render_frame();
     }
 

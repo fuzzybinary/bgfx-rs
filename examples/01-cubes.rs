@@ -3,7 +3,6 @@
 
 extern crate bgfx;
 extern crate cgmath;
-extern crate glutin;
 extern crate time;
 
 mod common;

@@ -2,7 +2,6 @@
 // License: http://opensource.org/licenses/ISC
 
 extern crate bgfx;
-extern crate glutin;
 
 mod common;
 
