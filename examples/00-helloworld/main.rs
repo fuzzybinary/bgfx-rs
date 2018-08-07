@@ -39,7 +39,7 @@ fn example(events: EventQueue) {
         let y: u16 = max(height / 2 / 16, 6) - 6;
         bgfx.dbg_text_clear(None, None);
         bgfx.dbg_text_image(x, y, 40, 12, LOGO, 160);
-        bgfx.dbg_text_print(0, 1, 0x4f, "examples/00-helloworld.rs");
+        bgfx.dbg_text_print(0, 1, 0x4f, "examples/00-helloworld/main.rs");
         bgfx.dbg_text_print(0, 2, 0x6f, "Description: Initialization and debug text.");
 
         // Advance to next frame. Rendering thread will be kicked to
@@ -52,5 +52,8 @@ fn example(events: EventQueue) {
 }
 
 fn main() {
-    examples_lib::run_example(1280, 720, example);
+    match examples_lib::run_example(1280, 720, example) {
+        Ok(_) => (),
+        Err(err) => println!("Error running example: {}", err)
+    }
 }

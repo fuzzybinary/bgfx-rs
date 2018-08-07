@@ -144,7 +144,7 @@ impl<'a> Cubes<'a> {
             // Use debug font to print information about this example.
             let frame_info = format!("Frame: {:7.3}[ms]", frame_time.num_milliseconds());
             self.bgfx.dbg_text_clear(None, None);
-            self.bgfx.dbg_text_print(0, 1, 0x4f, "examples/01-cubes.rs");
+            self.bgfx.dbg_text_print(0, 1, 0x4f, "examples/01-cubes/main.rs");
             self.bgfx.dbg_text_print(0, 2, 0x6f, "Description: Rendering simple static mesh.");
             self.bgfx.dbg_text_print(0, 3, 0x0f, &frame_info);
 
@@ -214,5 +214,9 @@ fn example(events: EventQueue) {
 }
 
 fn main() {
-    examples_lib::run_example(1280, 720, example);
+    let result = examples_lib::run_example(1280, 720, example);
+    match result {
+        Err(error) => println!("{}", error),
+        _ => ()
+    }
 }

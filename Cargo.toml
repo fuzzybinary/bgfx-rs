@@ -16,7 +16,7 @@ winit = "0.17.0"
 time = "0.1.33"
 
 [dev-dependencies.examples-lib]
-path = "examples-lib/"
+path = "examples_lib/"
 
 [build-dependencies]
 glob = "0.2"
