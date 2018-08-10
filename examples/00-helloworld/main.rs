@@ -2,6 +2,7 @@
 // License: http://opensource.org/licenses/ISC
 
 extern crate bgfx;
+extern crate bgfx_sys;
 extern crate examples_lib;
 
 use bgfx::*;
@@ -16,8 +17,11 @@ fn example(events: EventQueue) {
     let debug = DEBUG_TEXT;
     let reset = RESET_VSYNC;
 
-    let bgfx = bgfx::init(RendererType::Default, None, None).unwrap();
-    bgfx.reset(width, height, reset);
+    let mut init_params: bgfx_sys::BgfxInitParams = Default::default();
+    init_params.resolution.width = 1280;
+    init_params.resolution.height = 720;
+
+    let bgfx = bgfx::init(init_params).unwrap();
 
     // Enable debug text.
     bgfx.set_debug(debug);

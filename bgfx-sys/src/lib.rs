@@ -262,3 +262,14 @@ macro_rules! BGFX_STATE_BLEND_FUNC_RT_2E {
 macro_rules! BGFX_STATE_BLEND_FUNC_RT_3E {
     ($src:expr, $dst:expr, $equation:expr) => (BGFX_STATE_BLEND_FUNC_RT_xE!($src, $dst, $equation) << 22)
 }
+
+pub type BgfxInitParams = bgfx_init_t;
+impl std::default::Default for BgfxInitParams {
+    fn default() -> BgfxInitParams {
+        unsafe {
+            let mut params: BgfxInitParams = std::mem::uninitialized();
+            bgfx_init_ctor(&mut params);
+            params
+        }
+    }
+}
