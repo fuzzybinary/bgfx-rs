@@ -17,6 +17,27 @@ Documentation
 
 [API Documentation][docs]
 
+### Prerequisites
+
+On Windows you need to have LLVM installed, as it is needed by bindgen.  
+To do that you can Install [Chocolatey](https://chocolatey.org/) and then from command line:
+```
+choco install llvm
+```
+
+### Building
+
+Clone repository and Update submodules
+```
+git clone https://github.com/jazzay/bgfx-rs.git
+cd bgfx-rs
+git submodule update --init --recursive
+```
+Build
+```
+cargo build
+```
+
 ### Examples
 
 To run the examples, invoke them through cargo:
@@ -26,11 +47,6 @@ cargo run --example 00-helloworld
 cargo run --example 01-cubes
 ```
 
-**OSX Note:** There is currently no really clean way to exit the examples in
-OSX, and closing the window may in fact cause a crash. This is due to
-limitations in [glutin][glutin] (specifically [#468] and [#520]). This only
-effects the examples, and not the crate itself. The best way of closing them
-is to simply `Ctrl-C` in the console.
 
 License
 -------

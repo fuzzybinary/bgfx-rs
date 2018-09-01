@@ -6,7 +6,11 @@ extern crate winit;
 
 use bgfx::{Bgfx, PlatformData, RenderFrame, RendererType};
 
+#[cfg(target_os = "macos")]
 use winit::os::macos::WindowExt;
+
+#[cfg(target_os = "windows")]
+use winit::os::windows::WindowExt;
 
 use std::env;
 use std::fs::File;
@@ -136,6 +140,11 @@ fn init_bgfx_platform(window: &Window) {
 #[cfg(target_os = "macos")]
 fn get_platform_window(window: &winit::Window) -> *mut std::os::raw::c_void {
   return window.get_nswindow();
+}
+
+#[cfg(target_os = "windows")]
+fn get_platform_window(window: &winit::Window) -> *mut std::os::raw::c_void {
+  return window.get_hwnd() as *mut std::os::raw::c_void;
 }
 
 /// Set the platform data to be used by BGFX.
