@@ -17,7 +17,7 @@ Documentation
 
 [API Documentation][docs]
 
-### Prerequisites
+## Prerequisites
 
 On Windows you need to have LLVM installed, as it is needed by bindgen.  
 To do that you can Install [Chocolatey](https://chocolatey.org/) and then from command line:
@@ -25,7 +25,7 @@ To do that you can Install [Chocolatey](https://chocolatey.org/) and then from c
 choco install llvm
 ```
 
-### Building
+## Building
 
 Clone repository and Update submodules
 ```
@@ -33,12 +33,21 @@ git clone https://github.com/jazzay/bgfx-rs.git
 cd bgfx-rs
 git submodule update --init --recursive
 ```
-Build
+### Building for Non-Windows
 ```
 cargo build
 ```
+### Building for Windows
+Due to a dependency issue (shaderc) you need to build the sys first so that it copies the shaderc binary properly on Windows. Hopefully we can improve this in the future. After this you can successfully build and run the examples as below.
 
-### Examples
+```
+cd bgfx-sys
+cargo build
+cd ..
+cargo build
+```
+
+## Examples
 
 To run the examples, invoke them through cargo:
 
