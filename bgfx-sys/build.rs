@@ -7,6 +7,7 @@ use std::env;
 use std::io::Write;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
+use std::fs;
 
 fn main() {
     let target = env::var("TARGET").unwrap();
@@ -44,6 +45,7 @@ fn build_msvc(bitness: u32) {
     Command::new("bx/tools/bin/windows/genie.exe")
         .current_dir("bgfx")
         .arg("--with-dynamic-runtime")
+        .arg("--with-tools")
         .arg(format!("vs{}", vs_release))
         .output()
         .expect("Failed to generate project files");
@@ -65,6 +67,18 @@ fn build_msvc(bitness: u32) {
     path.push(".build");
     path.push(format!("win{}_vs{}", bitness, vs_release));
     path.push("bin");
+
+    // must copy tool binaries to expected location
+    let tool_src = format!("{}\\shadercRelease.exe", path.as_os_str().to_str().unwrap());
+    println!("SHADERC SRC = {}", tool_src);
+    let mut tool_dst = PathBuf::from(env::current_dir().unwrap());
+    tool_dst.push("bgfx");
+    tool_dst.push("tools");
+    tool_dst.push("bin");
+    tool_dst.push("windows");
+    tool_dst.push("shaderc.exe");
+    println!("SHADERC DST = {}", tool_dst.as_os_str().to_str().unwrap());
+    fs::copy(tool_src, tool_dst).unwrap();
 
     println!("cargo:rustc-link-lib=static=bxRelease");
     println!("cargo:rustc-link-lib=static=bimgRelease");
