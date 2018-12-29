@@ -2,7 +2,6 @@
 // License: http://opensource.org/licenses/ISC
 
 extern crate bgfx;
-extern crate bgfx_sys;
 extern crate cgmath;
 extern crate examples_lib;
 extern crate time;
@@ -107,7 +106,9 @@ impl<'a> Cubes<'a> {
 
     // Set view 0 clear state.
     let clear_flags = CLEAR_COLOR | CLEAR_DEPTH;
-    self.bgfx.set_view_clear(0, clear_flags, 0x303030ff, 1.0_f32, 0);
+    self
+      .bgfx
+      .set_view_clear(0, clear_flags, 0x303030ff, 1.0_f32, 0);
 
     // Create vertex stream declaration
     let decl = PosColorVertex::build_decl();
@@ -221,7 +222,7 @@ impl<'a> Cubes<'a> {
 }
 
 fn example(events: EventQueue) {
-  let mut init_params: bgfx_sys::BgfxInitParams = Default::default();
+  let mut init_params: bgfx::BgfxInitParams = Default::default();
   init_params.resolution.width = 1280;
   init_params.resolution.height = 720;
 

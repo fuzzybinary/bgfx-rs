@@ -2,7 +2,6 @@
 // License: http://opensource.org/licenses/ISC
 
 extern crate bgfx;
-extern crate bgfx_sys;
 extern crate examples_lib;
 
 use bgfx::*;
@@ -17,7 +16,7 @@ fn example(events: EventQueue) {
     let debug = DEBUG_TEXT;
     let reset = RESET_VSYNC;
 
-    let mut init_params: bgfx_sys::BgfxInitParams = Default::default();
+    let mut init_params: bgfx::BgfxInitParams = Default::default();
     init_params.resolution.width = 1280;
     init_params.resolution.height = 720;
 
@@ -58,6 +57,6 @@ fn example(events: EventQueue) {
 fn main() {
     match examples_lib::run_example(1280, 720, example) {
         Ok(_) => (),
-        Err(err) => println!("Error running example: {}", err)
+        Err(err) => println!("Error running example: {}", err),
     }
 }

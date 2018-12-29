@@ -7,9 +7,6 @@ build = "build.rs"
 [dependencies]
 bitflags = "0.3.2"
 
-[dependencies.bgfx-sys]
-path = "bgfx-sys/"
-
 [dev-dependencies]
 cgmath = "0.7.0"
 winit = "0.17.0"
@@ -20,6 +17,7 @@ path = "examples_lib/"
 
 [build-dependencies]
 glob = "0.2"
+bindgen = "0.25.5"
 
 [[example]]
 name = "00-helloworld"

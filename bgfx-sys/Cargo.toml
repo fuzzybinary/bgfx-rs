@@ -1,8 +1,0 @@
-[package]
-name = "bgfx-sys"
-version = "0.1.0"
-authors = ["Johan Sköld <johan@skold.cc>"]
-build = "build.rs"
-
-[build-dependencies]
-bindgen = "0.25.5"
